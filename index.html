@@ -6,19 +6,31 @@
         <title>Sense Space</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
+        
+        
     </head>
     <body>
         <h1>Sense Space</h1>
         UserID: <span id="uuid"></span><br/>
         <input type="text" id="message" disabled/><button id="send" disabled>Send</button>
         <div id="text"></div>
+
+        <br/>
+        <hr>
+        <br/></br>
+        <button  onclick="getLocation()">Where am I?</button>
+        <p id="geo"></p>
+    
+        <div id="map" style="width: 600px; height: 400px"></div>
         
-        
-        
-        <!-- Bower components -->
         <script src="bower_components/pubnub/web/pubnub.min.js"></script>
+        <script src="bower_components/leaflet/dist/leaflet.js"></script>
+
         <!-- Own scripts -->
         <script src="js/message.js"></script>
+        <script src ="js/mapping.js"></script>
         
         <script>
           var channel = 'game0';
@@ -86,6 +98,34 @@
                 sendMessage();
             }
           };
+            
+            var map = L.map('map');
+
+            L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                    'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                id: 'examples.map-i875mjb7'
+            }).addTo(map);
+
+            function onLocationFound(e) {
+                var radius = e.accuracy / 2;
+
+                L.marker(e.latlng).addTo(map)
+                    .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+                L.circle(e.latlng, radius).addTo(map);
+            }
+
+            function onLocationError(e) {
+                alert(e.message);
+            }
+
+            map.on('locationfound', onLocationFound);
+            map.on('locationerror', onLocationError);
+
+            map.locate({setView: true, maxZoom: 16});
           
         </script>
     </body>
