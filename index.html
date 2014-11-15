@@ -8,154 +8,179 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
         
         <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
-        
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="css/main.css" />
         
     </head>
     <body>
-        <h1>Sense Space</h1>
-        UserID: <span id="uuid"></span><br/>
-        <input type="text" id="message" disabled/><button id="send" disabled>Send</button>
-        <div id="text"></div>
-
-        <br/>
-        <hr>
-        <br/></br>
-        <button  onclick="getLocation()">Where am I?</button>
-        <p id="geo"></p>
-    
-        <div id="map" style="width: 100%; height: 400px"></div>
+      <div>
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+          <div class="container-fluid">
+            <div class="pull-left">
+              <a class="navbar-brand" href="#">SceneSpace</a>
+            </div>
+            <div class="pull-right text-right">
+              <div class="user">
+                User: <div id="uuid"></div>
+              </div>
+            </div>
+          </div>
+        </nav>
         
-        <script src="bower_components/lodash/dist/lodash.min.js"></script>
-        <script src="bower_components/pubnub/web/pubnub.min.js"></script>
-        <script src="bower_components/leaflet/dist/leaflet.js"></script>
-
-        <!-- Own scripts -->
-        <script src="js/players.js"></script>
-        <script src="js/message.js"></script>
-        <script src ="js/mapping.js"></script>
+        <div id="map"></div>
+        <hr/>
         
-        <script>
-          var channel = 'game0';
-          
-          var recordMessage = function(message, env, channel){
-            var recordText = function recordText(message){
-              document.getElementById('text').innerHTML += message + '<br/>';
-            };
-            var recordLocation = function recordLocation(message){
-              message = message.uuid + " | Lat: " + message.lat + " | Long: "+ message.lon;
-              
-              document.getElementById('text').innerHTML += message + '<br/>';
-            };
-            var recordTag = function recordTag(message){
-              // When tagged set background to red
-              if(message.victim === messageService.getUUID){
-                document.getElementsByTagName('body')[0].style.backgroundColor = "#ff0000";
-              }else{
-                document.getElementsByTagName('body')[0].style.backgroundColor = "#ffffff";
-              }
-              
-              message = message.uuid + " tagged " + message.victim;
-              document.getElementById('text').innerHTML += message + '<br/>';
-            };
-            var recordJoin = function recordJoin(message){
-              if(message.uuid !== messageService.getUUID){
-                message = message.uuid + " joined the game.";
-                playersService.addPlayer(message.uuid);
-                document.getElementById('text').innerHTML += message + '<br/>';
-              }
-            };
-            var recordLeave = function recordLeave(message){
-              if(message.uuid !== messageService.getUUID){
-                message = message.uuid + " left the game.";
-                playersService.removePlayer(message.uuid);
-                document.getElementById('text').innerHTML += message + '<br/>';
-              }
-            };
+        <div class="row">
+          <div class="col-md-6">
+            <form class="form-inline col-md-12">
+              <fieldset class="form-group col-md-12">
+                <legend>Send message</legend>
+                <input type="text" id="message" class="col-md-10" disabled/><button id="send" class="col-md-2" disabled>Send</button>
+              </fieldset>
+            </form>
             
+            <div id="text"></div>
+          </div>
+          <div class="col-md-6">
+            <button  onclick="getLocation()">Where am I?</button>
+            <p id="geo"></p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Bower scripts -->
+      <script src="bower_components/jquery/dist/jquery.min.js"></script>
+      <script src="bower_components/lodash/dist/lodash.min.js"></script>
+      <script src="bower_components/pubnub/web/pubnub.min.js"></script>
+      <script src="bower_components/leaflet/dist/leaflet.js"></script>
+      <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+      <!-- Own scripts -->
+      <script src="js/players.js"></script>
+      <script src="js/message.js"></script>
+      <script src ="js/mapping.js"></script>
+      
+      <script>
+        var channel = 'game0';
+        
+        var recordMessage = function(message, env, channel){
+          var recordText = function recordText(message){
+            document.getElementById('text').innerHTML += message + '<br/>';
+          };
+          var recordLocation = function recordLocation(message){
+            message = message.uuid + " | Lat: " + message.lat + " | Long: "+ message.lon;
             
-            if(message.type){
-              switch(message.type){
-                case "location":
-                  recordLocation(message);
-                  break;
-                case "tag":
-                  recordTag(message);
-                  break;
-                case "join":
-                  recordJoin(message);
-                  break;
-                case "leave":
-                  recordLeave(message);
-                  break;
-                default:
-                  recordText(message);
-              }
+            document.getElementById('text').innerHTML += message + '<br/>';
+          };
+          var recordTag = function recordTag(message){
+            // When tagged set background to red
+            if(message.victim === messageService.getUUID){
+              document.getElementsByTagName('body')[0].style.backgroundColor = "#ff0000";
             }else{
-              recordText(message);
+              document.getElementsByTagName('body')[0].style.backgroundColor = "#ffffff";
             }
-          };
-          
-          var sendMessage = function(){
-            var message = document.getElementById('message').value;
             
-            if(message){
-              messageService.sendMessage(message);
-              document.getElementById('message').value = '';
+            message = message.uuid + " tagged " + message.victim;
+            document.getElementById('text').innerHTML += message + '<br/>';
+          };
+          var recordJoin = function recordJoin(message){
+            if(message.uuid !== messageService.getUUID){
+              message = message.uuid + " joined the game.";
+              playersService.addPlayer(message.uuid);
+              document.getElementById('text').innerHTML += message + '<br/>';
+            }
+          };
+          var recordLeave = function recordLeave(message){
+            if(message.uuid !== messageService.getUUID){
+              message = message.uuid + " left the game.";
+              playersService.removePlayer(message.uuid);
+              document.getElementById('text').innerHTML += message + '<br/>';
             }
           };
           
-          var showUUID = function showUUID(){
-            document.getElementById('uuid').innerText = messageService.getUUID;
-            document.getElementById('message').disabled = false;
-            document.getElementById('message').focus();
-            document.getElementById('send').disabled = false;
-          };
           
-          messageService.subscribe(channel, recordMessage, showUUID);
+          if(message.type){
+            switch(message.type){
+              case "location":
+                recordLocation(message);
+                break;
+              case "tag":
+                recordTag(message);
+                break;
+              case "join":
+                recordJoin(message);
+                break;
+              case "leave":
+                recordLeave(message);
+                break;
+              default:
+                recordText(message);
+            }
+          }else{
+            recordText(message);
+          }
+        };
         
-          document.getElementById('send').onclick = sendMessage;
-          document.getElementById('message').onkeyup = function(event){
-            if(event.keyCode == 13)
-            {
-                sendMessage();
-            }
-          };
+        var sendMessage = function(){
+          var message = document.getElementById('message').value;
           
-          messageService.watchParticipation(function(message){
-            if(message.uuids){
-              playersService.batchUpdate(message.uuids);
-            }
-          });
+          if(message){
+            messageService.sendMessage(message);
+            document.getElementById('message').value = '';
+          }
+        };
+        
+        var showUUID = function showUUID(){
+          document.getElementById('uuid').innerText = messageService.getUUID.substr(0,messageService.getUUID.indexOf('-'));
+          document.getElementById('message').disabled = false;
+          document.getElementById('send').disabled = false;
+        };
+        
+        messageService.subscribe(channel, recordMessage, showUUID);
+      
+        document.getElementById('send').onclick = sendMessage;
+        document.getElementById('message').onkeyup = function(event){
+          if(event.keyCode == 13)
+          {
+              sendMessage();
+          }
+        };
+        
+        messageService.watchParticipation(function(message){
+          if(message.uuids){
+            playersService.batchUpdate(message.uuids);
+          }
+        });
+        
           
-            
-            var map = L.map('map');
+          var map = L.map('map');
 
-            L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-                maxZoom: 18,
-                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                    'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                id: 'examples.map-i875mjb7'
-            }).addTo(map);
+          L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+              maxZoom: 18,
+              attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                  '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                  'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+              id: 'examples.map-i875mjb7'
+          }).addTo(map);
 
-            function onLocationFound(e) {
-                var radius = e.accuracy / 2;
+          function onLocationFound(e) {
+              var radius = e.accuracy / 2;
 
-                L.marker(e.latlng).addTo(map)
-                    .bindPopup("You are within " + radius + " meters from this point").openPopup();
+              L.marker(e.latlng).addTo(map)
+                  .bindPopup("You are within " + radius + " meters from this point").openPopup();
 
-                L.circle(e.latlng, radius).addTo(map);
-            }
+              L.circle(e.latlng, radius).addTo(map);
+          }
 
-            function onLocationError(e) {
-                alert(e.message);
-            }
+          function onLocationError(e) {
+              alert(e.message);
+          }
 
-            map.on('locationfound', onLocationFound);
-            map.on('locationerror', onLocationError);
+          map.on('locationfound', onLocationFound);
+          map.on('locationerror', onLocationError);
 
-            map.locate({setView: true, maxZoom: 16});
-          
-        </script>
+          map.locate({setView: true, maxZoom: 16});
+        
+      </script>
     </body>
 </html>

@@ -1,0 +1,15 @@
+.user{
+  margin:3px;
+}
+
+.navbar{
+  height : 8vh;
+  min-height : 8vh;
+  margin:0;
+}
+
+#map {
+  width:100vw;
+  height:90vh;
+  margin-top:8vh;
+}

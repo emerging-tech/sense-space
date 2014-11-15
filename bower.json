@@ -17,6 +17,7 @@
   "dependencies": {
     "pubnub": "~3.7.2",
     "leaflet": "~0.7.3",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "bootstrap": "~3.3.1"
   }
 }
