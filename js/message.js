@@ -85,6 +85,7 @@ var messageService = (function(){
     sendMessage : sendMessage,
     sendLocation : sendLocation,
     tagUser : tagUser,
-    getUUID : customUUID
+    getUUID : customUUID,
+    watchParticipation : watchParticipation
   };
 }());
