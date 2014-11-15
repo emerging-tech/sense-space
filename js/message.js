@@ -5,24 +5,42 @@ var messageService = (function(){
     return uuid;
   }());
   
+  var currentChannel;
+  
   var subscribe = function subscribe(channel, onMessage, onConnect){
     onMessage = onMessage || function(message,env,channel){
       document.getElementById('text').innerHTML += message;
     };
     
+    currentChannel = channel;
+    
     pubnub.subscribe({                                      
-      channel : channel,
+      channel : currentChannel,
       message : onMessage,
       connect : onConnect
     });
   };
   
-  var sendMessage = function sendMessage(channel, message, cb){
+  var sendMessage = function sendMessage(message, cb){
     pubnub.publish({                                     
-         channel : channel,
+         channel : currentChannel,
          message : message,
          callback: cb
     })
+  };
+  
+  var sendLocation = function sendLocation(location){
+    if(location){
+      sendMessage({
+        type : 'location',
+        lat: location.latitude,
+        lon: location.longitude,
+        accuracy : location.accuracy,
+        heading : location.heading,
+        timestamp : new Date(), 
+        uuid : customUUID
+      });
+    }
   };
   
   pubnub = PUBNUB.init({                                  
@@ -34,6 +52,7 @@ var messageService = (function(){
   return {
     subscribe : subscribe,
     sendMessage : sendMessage,
+    sendLocation : sendLocation,
     getUUID : customUUID
   };
 }());

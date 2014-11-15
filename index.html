@@ -24,14 +24,34 @@
           var channel = 'game0';
           
           var recordMessage = function(message, env, channel){
-            document.getElementById('text').innerHTML += message + '<br/>';
+            var recordText = function recordText(message){
+              document.getElementById('text').innerHTML += message + '<br/>';
+            };
+            var recordLocation = function recordLocation(message){
+              message = message.uuid + " | Lat: " + message.lat + " | Long: "+ message.lon;
+              
+              document.getElementById('text').innerHTML += message + '<br/>';
+            };
+            
+            
+            if(message.type){
+              switch(message.type){
+                case "location":
+                  recordLocation(message);
+                  break;
+                default:
+                  recordText(message);
+              }
+            }else{
+              recordText(message);
+            }
           };
           
           var sendMessage = function(){
             var message = document.getElementById('message').value;
             
             if(message){
-              messageService.sendMessage(channel, message);
+              messageService.sendMessage(message);
               document.getElementById('message').value = '';
             }
           };
