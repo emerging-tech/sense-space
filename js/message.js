@@ -21,7 +21,7 @@ var messageService = (function(){
     pubnub.publish({                                     
          channel : channel,
          message : message,
-         callback: cb || function(m){ console.log('Sent: ' + m) }
+         callback: cb
     })
   };
   
