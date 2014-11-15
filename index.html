@@ -13,49 +13,78 @@
     </head>
     <body>
         <h1>Sense Space</h1>
-        <input type="text" id="message" /><button id="send">Send</button>
+        UserID: <span id="uuid"></span><br/>
+        <input type="text" id="message" disabled/><button id="send" disabled>Send</button>
         <div id="text"></div>
 
-       <br/>
+        <br/>
         <hr>
         <br/></br>
         <button  onclick="getLocation()">Where am I?</button>
         <p id="geo"></p>
     
         <div id="map" style="width: 600px; height: 400px"></div>
-        <script src ="js/mapping.js"></script>
+        
         <script src="bower_components/pubnub/web/pubnub.min.js"></script>
-        <script src="bower_components/leaflet/dist/leaflet.js"
+        <script src="bower_components/leaflet/dist/leaflet.js"></script>
+
+        <!-- Own scripts -->
+        <script src="js/message.js"></script>
+        <script src ="js/mapping.js"></script>
         
         <script>
-             pubnub = PUBNUB.init({                                  
-                 publish_key   : 'pub-c-f86007fc-87f8-49f5-91b1-a2ab4ed186cc',
-                 subscribe_key : 'sub-c-f6602896-6cce-11e4-b8ca-02ee2ddab7fe'
-             })
-
-             pubnub.subscribe({                                      
-                 channel : "game0",
-                 message : function(message,env,channel){
-                   document.getElementById('text').innerHTML =
-                   "Message Received." + '<br>' +
-                   "Channel: " + channel + '<br>' +
-                   "Message: " + JSON.stringify(message)  + '<br>' +
-                   "Raw Envelope: " + JSON.stringify(env) + '<br>'
-                 }
-             })
-             
-             document.getElementById('send').onclick = function(){
-              pubnub.publish({                                     
-                     channel : "game0",
-                     message : document.getElementById('message').value,
-                     callback: function(m){ console.log(m) }
-                })
-  
+          var channel = 'game0';
+          
+          var recordMessage = function(message, env, channel){
+            var recordText = function recordText(message){
+              document.getElementById('text').innerHTML += message + '<br/>';
             };
-
-        </script>
+            var recordLocation = function recordLocation(message){
+              message = message.uuid + " | Lat: " + message.lat + " | Long: "+ message.lon;
+              
+              document.getElementById('text').innerHTML += message + '<br/>';
+            };
+            
+            
+            if(message.type){
+              switch(message.type){
+                case "location":
+                  recordLocation(message);
+                  break;
+                default:
+                  recordText(message);
+              }
+            }else{
+              recordText(message);
+            }
+          };
+          
+          var sendMessage = function(){
+            var message = document.getElementById('message').value;
+            
+            if(message){
+              messageService.sendMessage(message);
+              document.getElementById('message').value = '';
+            }
+          };
+          
+          var showUUID = function showUUID(){
+            document.getElementById('uuid').innerText = messageService.getUUID;
+            document.getElementById('message').disabled = false;
+            document.getElementById('message').focus();
+            document.getElementById('send').disabled = false;
+          };
+          
+          messageService.subscribe(channel, recordMessage, showUUID);
         
-        <script>
+          document.getElementById('send').onclick = sendMessage;
+          document.getElementById('message').onkeyup = function(event){
+            if(event.keyCode == 13)
+            {
+                sendMessage();
+            }
+          };
+            
             var map = L.map('map');
 
             L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
@@ -83,7 +112,7 @@
             map.on('locationerror', onLocationError);
 
             map.locate({setView: true, maxZoom: 16});
+          
         </script>
-
     </body>
 </html>
