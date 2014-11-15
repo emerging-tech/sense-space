@@ -18,6 +18,10 @@ var playersService = (function(){
     return players[uuid];
   };
   
+  var getAllPlayers = function getAllPlayers(){
+    return players;
+  };
+  
   var updatePlayerLocation = function updatePlayerLocation(uuid, location){
     var player = players[uuid];
     if(!player) player = addPlayer(uuid);
@@ -44,6 +48,6 @@ var playersService = (function(){
     getPlayer : getPlayer,
     batchUpdate : batchUpdate,
     updatePlayerLocation : updatePlayerLocation,
-    getAllPlayers : function(){return players;}
+    getAllPlayers : getAllPlayers
   };
 }());
