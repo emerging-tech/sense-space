@@ -58,7 +58,7 @@
               document.getElementById('text').innerHTML += message + '<br/>';
             };
             var recordConnect = function recordConnect(message){
-              if(message.uuid !== message.getUUID){
+              if(message.uuid !== messageService.getUUID){
                 message = message.uuid + " joined the game.";
                 playersService.addPlayer(message.uuid, message.location);
                 document.getElementById('text').innerHTML += message + '<br/>';
