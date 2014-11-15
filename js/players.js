@@ -27,13 +27,13 @@ var playersService = (function(){
   
   var batchUpdate = function batchUpdate(participantUUIDs){
     // Remove players that have left
-    _.foreach(players, function(player){
+    _.forEach(players, function(player){
       if(!_.contains(participantUUIDs, player.uuid)){
         removePlayer(uuid);
       }
     });    
     /// Add new players
-    _.foreach(participantUUIDs, function(uuid){
+    _.forEach(participantUUIDs, function(uuid){
       if(!player[uuid]) addPlayer(uuid);
     });
   };
@@ -43,6 +43,7 @@ var playersService = (function(){
     removePlayer : removePlayer,
     getPlayer : getPlayer,
     batchUpdate : batchUpdate,
-    updatePlayerLocation : updatePlayerLocation
+    updatePlayerLocation : updatePlayerLocation,
+    getAllPlayers : function(){return players;}
   };
 }());
