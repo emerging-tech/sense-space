@@ -9,7 +9,38 @@
     </head>
     <body>
         <h1>Sense Space</h1>
+        <input type="text" id="message" /><button id="send">Send</button>
+        <div id="text"></div>
 
         <script src="bower_components/pubnub/web/pubnub.min.js"></script>
+        
+        <script>
+             pubnub = PUBNUB.init({                                  
+                 publish_key   : 'pub-c-f86007fc-87f8-49f5-91b1-a2ab4ed186cc',
+                 subscribe_key : 'sub-c-f6602896-6cce-11e4-b8ca-02ee2ddab7fe'
+             })
+
+             pubnub.subscribe({                                      
+                 channel : "game0",
+                 message : function(message,env,channel){
+                   document.getElementById('text').innerHTML =
+                   "Message Received." + '<br>' +
+                   "Channel: " + channel + '<br>' +
+                   "Message: " + JSON.stringify(message)  + '<br>' +
+                   "Raw Envelope: " + JSON.stringify(env) + '<br>'
+                 }
+             })
+             
+             document.getElementById('send').onclick = function(){
+              pubnub.publish({                                     
+                     channel : "game0",
+                     message : document.getElementById('message').value,
+                     callback: function(m){ console.log(m) }
+                })
+
+              
+             };
+
+          </script>
     </body>
 </html>
