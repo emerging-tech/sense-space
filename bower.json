@@ -16,6 +16,7 @@
   ],
   "dependencies": {
     "pubnub": "~3.7.2",
-    "leaflet": "~0.7.3"
+    "leaflet": "~0.7.3",
+    "lodash": "~2.4.1"
   }
 }

@@ -12,12 +12,20 @@ var messageService = (function(){
       document.getElementById('text').innerHTML += message;
     };
     
+    connectWrapper = function(){
+      sendMessage({
+        type : 'connect',
+        uuid : customUUID
+      });
+      if(onConnect) onConnect();
+    };
+    
     currentChannel = channel;
     
     pubnub.subscribe({                                      
       channel : currentChannel,
       message : onMessage,
-      connect : onConnect
+      connect : connectWrapper
     });
   };
   
