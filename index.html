@@ -32,12 +32,26 @@
               
               document.getElementById('text').innerHTML += message + '<br/>';
             };
+            var recordTag = function recordTag(message){
+              // When tagged set background to red
+              if(message.victim === messageService.getUUID){
+                document.getElementsByTagName('body')[0].style.backgroundColor = "#ff0000";
+              }else{
+                document.getElementsByTagName('body')[0].style.backgroundColor = "#ffffff";
+              }
+              
+              message = message.uuid + " tagged " + message.victim;
+              document.getElementById('text').innerHTML += message + '<br/>';
+            };
             
             
             if(message.type){
               switch(message.type){
                 case "location":
                   recordLocation(message);
+                  break;
+                case "tag":
+                  recordTag(message);
                   break;
                 default:
                   recordText(message);

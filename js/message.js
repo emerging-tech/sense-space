@@ -43,6 +43,16 @@ var messageService = (function(){
     }
   };
   
+  var tagUser = function tagUser(otherUser){
+    if(otherUser){
+      sendMessage({
+        type : 'tag',
+        victim : otherUser,
+        uuid : customUUID
+      });
+    }
+  };
+  
   pubnub = PUBNUB.init({                                  
     publish_key   : 'pub-c-f86007fc-87f8-49f5-91b1-a2ab4ed186cc',
     subscribe_key : 'sub-c-f6602896-6cce-11e4-b8ca-02ee2ddab7fe',
@@ -54,6 +64,7 @@ var messageService = (function(){
     subscribe : subscribe,
     sendMessage : sendMessage,
     sendLocation : sendLocation,
+    tagUser : tagUser,
     getUUID : customUUID
   };
 }());
