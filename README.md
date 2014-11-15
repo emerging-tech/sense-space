@@ -1,8 +1,12 @@
-sense-space
-===========
+# sense-space
 
+## running
 
-# keys!
+```bash
+python -m SimpleHTTPServer
+```
+
+## keys!
 
 ```
 pub-c-f86007fc-87f8-49f5-91b1-a2ab4ed186cc
