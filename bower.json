@@ -15,6 +15,7 @@
     "tests"
   ],
   "dependencies": {
-    "pubnub": "~3.7.2"
+    "pubnub": "~3.7.2",
+    "leaflet": "~0.7.3"
   }
 }
