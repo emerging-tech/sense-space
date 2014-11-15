@@ -58,9 +58,11 @@
               document.getElementById('text').innerHTML += message + '<br/>';
             };
             var recordConnect = function recordConnect(message){
-              message = message.uuid + " joined the game.";
-              playersService.addPlayer(message.uuid, message.location);
-              document.getElementById('text').innerHTML += message + '<br/>';
+              if(message.uuid !== message.getUUID){
+                message = message.uuid + " joined the game.";
+                playersService.addPlayer(message.uuid, message.location);
+                document.getElementById('text').innerHTML += message + '<br/>';
+              }
             };
             
             
