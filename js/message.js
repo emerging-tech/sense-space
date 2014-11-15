@@ -5,16 +5,16 @@ var messageService = (function(){
     return uuid;
   }());
   
-  var currentChannel;
+  var currentChannel, watchInterval;
   
   var subscribe = function subscribe(channel, onMessage, onConnect){
     onMessage = onMessage || function(message,env,channel){
       document.getElementById('text').innerHTML += message;
     };
     
-    connectWrapper = function(){
+    var connectWrapper = function(){
       sendMessage({
-        type : 'connect',
+        type : 'join',
         uuid : customUUID
       });
       if(onConnect) onConnect();
@@ -59,6 +59,18 @@ var messageService = (function(){
         uuid : customUUID
       });
     }
+  };
+  
+  var watchParticipation = function watchParticipation(callback, seconds){
+    if(watchInterval) watchInterval.cancel();
+    if(!seconds) seconds = 5;
+    
+    watchInterval = setInterval(function(){
+      pubnub.here_now({
+        channel : currentChannel,
+        callback : callback
+      });
+    }, seconds * 1000);
   };
   
   pubnub = PUBNUB.init({                                  

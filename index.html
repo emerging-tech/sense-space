@@ -57,10 +57,17 @@
               message = message.uuid + " tagged " + message.victim;
               document.getElementById('text').innerHTML += message + '<br/>';
             };
-            var recordConnect = function recordConnect(message){
+            var recordJoin = function recordJoin(message){
               if(message.uuid !== messageService.getUUID){
                 message = message.uuid + " joined the game.";
-                playersService.addPlayer(message.uuid, message.location);
+                playersService.addPlayer(message.uuid);
+                document.getElementById('text').innerHTML += message + '<br/>';
+              }
+            };
+            var recordLeave = function recordLeave(message){
+              if(message.uuid !== messageService.getUUID){
+                message = message.uuid + " left the game.";
+                playersService.removePlayer(message.uuid);
                 document.getElementById('text').innerHTML += message + '<br/>';
               }
             };
@@ -74,8 +81,11 @@
                 case "tag":
                   recordTag(message);
                   break;
-                case "connect":
-                  recordConnect(message);
+                case "join":
+                  recordJoin(message);
+                  break;
+                case "leave":
+                  recordLeave(message);
                   break;
                 default:
                   recordText(message);
@@ -110,6 +120,13 @@
                 sendMessage();
             }
           };
+          
+          messageService.watchParticipation(function(message){
+            if(message.uuids){
+              playersService.batchUpdate(message.uuids);
+            }
+          });
+          
             
             var map = L.map('map');
 
