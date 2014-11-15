@@ -1,17 +1,19 @@
 var messageService = (function(){
-  var customUUID = function getCustomUUID(){
+  var customUUID = (function getCustomUUID(){
     var uuid = sessionStorage.customUUID || PUBNUB.uuid();
     sessionStorage.setItem('customUUID',uuid); 
-  };
+    return uuid;
+  }());
   
-  var subscribe = function subscribe(channel, onMessage){
+  var subscribe = function subscribe(channel, onMessage, onConnect){
     onMessage = onMessage || function(message,env,channel){
       document.getElementById('text').innerHTML += message;
     };
     
     pubnub.subscribe({                                      
       channel : channel,
-      message : onMessage
+      message : onMessage,
+      connect : onConnect
     });
   };
   
@@ -31,6 +33,7 @@ var messageService = (function(){
   
   return {
     subscribe : subscribe,
-    sendMessage : sendMessage
+    sendMessage : sendMessage,
+    getUUID : customUUID
   };
 }());

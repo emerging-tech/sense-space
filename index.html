@@ -9,7 +9,8 @@
     </head>
     <body>
         <h1>Sense Space</h1>
-        <input type="text" id="message" autofocus /><button id="send">Send</button>
+        UserID: <span id="uuid"></span><br/>
+        <input type="text" id="message" disabled/><button id="send" disabled>Send</button>
         <div id="text"></div>
         
         <!-- Bower components -->
@@ -33,8 +34,14 @@
             }
           };
           
+          var showUUID = function showUUID(){
+            document.getElementById('uuid').innerText = messageService.getUUID;
+            document.getElementById('message').disabled = false;
+            document.getElementById('message').focus();
+            document.getElementById('send').disabled = false;
+          };
           
-          messageService.subscribe(channel, recordMessage);
+          messageService.subscribe(channel, recordMessage, showUUID);
         
           document.getElementById('send').onclick = sendMessage;
           document.getElementById('message').onkeyup = function(event){
@@ -43,6 +50,7 @@
                 sendMessage();
             }
           };
+          
         </script>
     </body>
 </html>
