@@ -34,7 +34,7 @@ var playersService = (function(){
     });    
     /// Add new players
     _.forEach(participantUUIDs, function(uuid){
-      if(!player[uuid]) addPlayer(uuid);
+      if(!players[uuid]) addPlayer(uuid);
     });
   };
   
