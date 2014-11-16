@@ -16,7 +16,7 @@ sub-c-f6602896-6cce-11e4-b8ca-02ee2ddab7fe
 
 ## Service APIs
 
-* = optional
+\* = optional
 
 ### message service
 ```javacscript
