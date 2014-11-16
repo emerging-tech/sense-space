@@ -1,7 +1,8 @@
 <table class='table table-hover table-bordered'>
     <div ng-controller="Game">
-        <h4>{{msg}}</h4>
         {{Refresh()}}
+        <leaflet  height="85vh" width="100vw" style="position:absolute;left:0;"
+                 center="center" markers="posMarker" paths="posPath"></leaflet>
         <span>Identify Yoursef:</span>
         <input type="text" class="form-control" ng-model="deviceData.gamerId">
         <span>What's your team:</span>
@@ -9,7 +10,5 @@
         <br/>
         <span>YourScore: {{myScore}}, last reading: {{deviceData.lastreading | date:'dd/MM/yyyy HH:mm:ss'}}, Online Players: {{playerCount}} </span>
         <br/>
-        <leaflet  height="{{mapheight()}}px" width="{{mapwidth()}}px" 
-                 center="center" markers="posMarker" paths="posPath"></leaflet>
     </div>
 </table>
