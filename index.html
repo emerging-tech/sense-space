@@ -58,10 +58,12 @@
       <!-- Own scripts -->
       <script src="js/players.js"></script>
       <script src="js/message.js"></script>
-      <script src ="js/mapping.js"></script>
+      <script src="js/stats.js"></script>
+      <script src="js/mapping.js"></script>
       
       <script>
         var channel = 'game0';
+        var isTagged = false;
         
         var recordMessage = function(message, env, channel){
           var recordText = function recordText(message){
@@ -76,7 +78,13 @@
             // When tagged set background to red
             if(message.victim === messageService.getUUID){
               document.getElementsByTagName('body')[0].style.backgroundColor = "#ff0000";
+              statsService.wasTagged();
+              isTagged = true;
             }else{
+              if(isTagged){
+                statsService.taggedPlayer();
+                isTagged = false;
+              }
               document.getElementsByTagName('body')[0].style.backgroundColor = "#ffffff";
             }
             
@@ -134,6 +142,7 @@
           document.getElementById('uuid').innerText = messageService.getUUID.substr(0,messageService.getUUID.indexOf('-'));
           document.getElementById('message').disabled = false;
           document.getElementById('send').disabled = false;
+          statsService.createStats(messageService.getUUID);
         };
         
         messageService.subscribe(channel, recordMessage, showUUID);
