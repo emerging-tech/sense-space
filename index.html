@@ -134,7 +134,8 @@
           }
         };
         
-        var sendMessage = function(){
+        var sendMessage = function(event){
+          event.preventDefault();
           var message = document.getElementById('message').value;
           
           if(message){
@@ -156,7 +157,7 @@
         document.getElementById('message').onkeyup = function(event){
           if(event.keyCode == 13)
           {
-              sendMessage();
+              sendMessage(event);
           }
         };
         
