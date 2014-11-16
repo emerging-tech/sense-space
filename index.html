@@ -25,6 +25,7 @@
                 User: <span id="uuid"><i class="fa fa-spinner fa-spin"></i></span><br/>
                 Number of players: <span id="playercount"><i class="fa fa-spinner fa-spin"></i></span>
               </div>
+              <div class="playtime" id="playtime"></div>
             </div>
           </div>
         </nav>
@@ -164,6 +165,16 @@
           }
         });
         
+        
+        var playTimeInterval = setInterval(function(){
+          var playTime = statsService.getStats().playTime(),
+              min = Math.round((playTime/1000/60) << 0),
+              sec = Math.round((playTime/1000) % 60);
+          var playTimeText = "";
+          if(min) playTimeText += min + "min<br/>";
+          if(sec) playTimeText += sec + "s<br/>";
+          document.getElementById('playtime').innerHTML = playTimeText;
+        },1000);
           
           var map = L.map('map');
 

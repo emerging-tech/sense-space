@@ -1,5 +1,15 @@
 .user{
   margin:3px;
+  display : inline-block;
+  border-right:1px solid #ccc;
+  padding:3px;
+}
+
+.playtime{
+  display : inline-block;
+  padding:3px;
+  text-align : center;
+  width:50px;
 }
 
 .navbar{

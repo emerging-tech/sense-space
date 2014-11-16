@@ -21,10 +21,13 @@ var statsService = (function(){
   }  
   
   var createStats = function createStats(uuid){
-    stats = {};
-    stats.uuid = uuid;
-    stats.joined = new Date();
-    stats.tagged = [];
+    stats = {
+      uuid : uuid,
+      joined : new Date(),
+      tagged : [],
+      numberOfTimesIt : function(){return this.tagged.length;},
+      playTime : function(){return new Date().getTime() - this.joined.getTime();}
+    };
   };
   
   var updateDistance = function updateDistance(location){
@@ -48,11 +51,15 @@ var statsService = (function(){
     lastTagged.victim = otherPlayer;
   };
   
-  
+  var getStats = function getStats(){
+    return stats;
+  }
+    
   return {
     createStats : createStats,
     updateDistance : updateDistance,
     wasTagged : wasTagged,
-    taggedPlayer : taggedPlayer
+    taggedPlayer : taggedPlayer,
+    getStats : getStats
   };
 }());
