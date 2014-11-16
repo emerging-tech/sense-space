@@ -16,6 +16,4 @@ var SenseSpaceApp=angular.module('SenseSpaceApp', ['ngRoute', 'leaflet-directive
         templateUrl:'partials/Simulator.html'
     });
     //-----------------------------------------
-
-    $locationProvider.html5Mode(true);
 });
