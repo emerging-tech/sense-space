@@ -24,20 +24,22 @@ SenseSpaceApp.controller('Game', function($scope, $interval, $window, $rootScope
 
     $rootScope.$on(PubNub.ngMsgEv($scope.channel), function(event, payload) {
         var message = payload.message;
-        $scope.players[message.gamerId] = message;
-        $scope.posMarker[message.gamerId.replace(/\-/g,'')] = {
-           lat: message.latitude,
-           lng: message.longitude,
-           message: message.gamerId,
-           focus: false,
-           draggable: false,
-           icon: {
-                type: 'div',
-                iconSize: [10, 10],
-                className: 'red',
-                iconAnchor:  [5, 5]
-            }
-        };
+        if(message.gamerId !== $scope.deviceData.gamerId){
+            $scope.players[message.gamerId] = message;
+            $scope.posMarker[message.gamerId.replace(/\-/g,'')] = {
+               lat: message.latitude,
+               lng: message.longitude,
+               message: message.gamerId,
+               focus: false,
+               draggable: false,
+               icon: {
+                    type: 'div',
+                    iconSize: [10, 10],
+                    className: 'red',
+                    iconAnchor:  [5, 5]
+                }
+            };
+        }
     })
 
     $rootScope.$on(PubNub.ngPrsEv($scope.channel), function(event, payload) {
