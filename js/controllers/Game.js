@@ -83,14 +83,6 @@ SenseSpaceApp.controller('Game', function($scope, $interval, $window, $rootScope
     $scope.timerTreshold=1000;
 
     navigator.geolocation.watchPosition(showPosition, undefined, {enableHighAccuracy:true,timeout: 5000,maximumAge: 0});
-    $scope.readPos = function(){
-        //  if (navigator.geolocation) {
-        //         navigator.geolocation.getCurrentPosition(showPosition, undefined, {enableHighAccuracy:true});
-        //  } else {
-        //     $scope.msg = "Geolocation is not supported by this browser.";
-        // }
-    };
-
     
     $scope.mapheight =function(){
         var height = $window.innerHeight/1.5;
