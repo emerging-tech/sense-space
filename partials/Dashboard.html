@@ -1,0 +1,18 @@
+<table class='table table-hover table-bordered'>
+    <div ng-controller="Dashboard">
+        <h4>{{msg}}</h4>
+        {{Refresh()}}
+        <br/>
+        <span>Last reading: {{lastreading | date:'dd/MM/yyyy HH:mm:ss'}} </span>
+        <br/>
+        <div class="row message">
+            <div class="well col-xs-9">
+                <ol>
+                    <li ng-repeat="position in positions">
+                        Gamer Id: {{ position.gamerId }}, Team Id: {{ position.TeamId }}, Timestamp: {{ position.timestamp }}<br/>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</table>

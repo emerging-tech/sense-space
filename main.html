@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html ng-app="SenseSpaceApp">
+    <head>
+        <title>Space Sense</title>
+        <base href='/'>
+        <link rel='stylesheet' href='css/bootstrap.min.css' />
+        <link rel='stylesheet' href="css/leaflet.css"/>
+    </head>
+
+    <body ng-cloak>
+
+		<div class='container'>
+            <nav ng-controller="NavController" class="navbar navbar-default" role="navigation">
+            
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                     <button type="button" class="navbar-toggle" ng-click="isCollapsed = !isCollapsed">
+                         <span class="sr-only">Toggle navigation</span>
+                         <span class="icon-bar"></span>
+                         <span class="icon-bar"></span>
+                         <span class="icon-bar"></span>
+                     </button>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="navbar-collapse" ng-class="isCollapsed ? 'collapse' : 'in'">
+                   <ul class="nav navbar-nav">
+
+                        <li  ng-class="getClass('/Game')"> <a href="/Game">
+                            <span class="glyphicon glyphicon-tree-conifer"></span> Game Mode</a></li>
+                        <li  ng-class="getClass('/Simulator')"> <a href="/Simulator">
+                            <span class="glyphicon glyphicon-list-alt"></span> Simulator</a></li>
+                        <li  ng-class="getClass('/Dashboard')"><a href="/Dashboard">
+                            <span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
+                   </ul>
+                </div>
+	        </nav>
+        </div>
+        
+        <div class="container" ng-view>
+            <!-- Route dependent content goes here -->
+        </div>
+        
+        
+         <!-- Lib -->
+        <script src="bower_components/pubnub/web/pubnub.min.js"></script>
+        <script src = "lib/jquery-2.0.3.min.js"></script>
+        <script src = "lib/bootstrap.min.js"></script>
+        <script src = "lib/underscore.js"></script>
+        <script src = "lib/angular/angular.min.js"></script>
+        <script src = "lib/angular-route/angular-route.min.js"></script>
+        <script src = "lib/leaflet.js"></script>
+        <script src = "lib/angular-leaflet-directive.js"></script>
+        <script src = "lib/angular-leaflet-directive.min.js"></script>
+        <script src="bower_components/pubnub-angular/lib/pubnub-angular.js"></script>
+
+        <!-- Your App -->
+        <script src = "js/app.js"></script>
+        
+        <!-- Controllers -->
+        <script src = "js/controllers/Simulator.js"></script>
+        <script src = "js/controllers/Dashboard.js"></script>
+        <script src = "js/controllers/Game.js"></script>
+        <script src = "js/controllers/NavController.js"></script>
+        
+        <!--Directives -->
+        <script src ="js/directives/mycurrentTime.js"></script>
+        
+        <!-- Services -->
+        <script src ="js/services/SendPosition.js"></script>
+        <script src ="js/services/ReadPositions.js"></script>
+        
+        <!-- Filters -->
+        
+    </body>
+</html>
