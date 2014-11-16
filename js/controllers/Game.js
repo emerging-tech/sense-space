@@ -84,7 +84,7 @@ SenseSpaceApp.controller('Game', function($scope, $interval, $window, $rootScope
 
     $scope.readPos = function(){
          if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
+                navigator.geolocation.getCurrentPosition(showPosition, undefined, {enableHighAccuracy:true});
          } else {
             $scope.msg = "Geolocation is not supported by this browser.";
         }
