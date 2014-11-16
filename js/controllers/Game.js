@@ -30,7 +30,13 @@ SenseSpaceApp.controller('Game', function($scope, $interval, $window, $rootScope
            lng: message.longitude,
            message: message.gamerId,
            focus: false,
-           draggable: false
+           draggable: false,
+           icon: {
+                type: 'div',
+                iconSize: [10, 10],
+                className: 'red',
+                iconAnchor:  [5, 5]
+            }
         };
     })
 
@@ -65,26 +71,8 @@ SenseSpaceApp.controller('Game', function($scope, $interval, $window, $rootScope
         zoom : 18
     };
     $scope.posMarker= {};
-//    {
-//        position :{
-//            lat: 0,
-//            lng: 0,
-//            message: "This is your actual position",
-//            focus: true,
-//            draggable: false
-//        }
-//    };
 
-    $scope.posPath= [];
-    // {
-    //     circle: {
-    //         weight: 2,
-    //         color: '#ff612f',
-    //         latlngs: $scope.posMarker.position,
-    //         radius: 5,
-    //         type: 'circleMarker'
-    //     }
-    // };
+    $scope.posPath= {};
 
     defaults: {
         scrollWheelZoom: false
@@ -131,8 +119,17 @@ SenseSpaceApp.controller('Game', function($scope, $interval, $window, $rootScope
                focus: false,
                draggable: false
             };
-            $scope.center.lat=lat;
-            $scope.center.lng=lng;
+            $scope.posPath.me = {
+                weight: 2,
+                color: '#1000FD',
+                latlngs: $scope.posMarker.me,
+                radius: 10,
+                type: 'circleMarker'
+            };
+            if(!$scope.center.lat && !$scope.center.lng){
+                $scope.center.lat=lat;
+                $scope.center.lng=lng;
+            }
             // // and send it to the server
             // SendPosition.sendPos($scope.deviceData)
             //  .then( function(){console.log( "Loaded!" );},
