@@ -9,6 +9,7 @@
         
         <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css" />
         <link rel="stylesheet" href="css/main.css" />
         
     </head>
@@ -21,7 +22,8 @@
             </div>
             <div class="pull-right text-right">
               <div class="user">
-                User: <div id="uuid"></div>
+                User: <span id="uuid"></span><br/>
+                Number of players: <span id="playercount"></span>
               </div>
             </div>
           </div>
@@ -156,6 +158,7 @@
         };
         
         messageService.watchParticipation(function(message){
+          document.getElementById('playercount').innerText = message.occupancy;
           if(message.uuids){
             playersService.batchUpdate(message.uuids);
           }
