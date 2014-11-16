@@ -21,6 +21,7 @@ var statsService = (function(){
   }  
   
   var createStats = function createStats(uuid){
+    stats = {};
     stats.uuid = uuid;
     stats.joined = new Date();
     stats.tagged = [];
