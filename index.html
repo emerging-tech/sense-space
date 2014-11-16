@@ -30,6 +30,8 @@
           </div>
         </nav>
         
+        <div class="alert alert-warning collapse" id="alert"></div>
+        
         <div id="map"></div>
         <hr/>
         
@@ -167,13 +169,15 @@
         
         
         var playTimeInterval = setInterval(function(){
-          var playTime = statsService.getStats().playTime(),
-              min = Math.round((playTime/1000/60) << 0),
-              sec = Math.round((playTime/1000) % 60);
-          var playTimeText = "";
-          if(min) playTimeText += min + "min<br/>";
-          if(sec) playTimeText += sec + "s<br/>";
-          document.getElementById('playtime').innerHTML = playTimeText;
+          if(statsService.getStats()){
+            var playTime = statsService.getStats().playTime(),
+                min = Math.round((playTime/1000/60) << 0),
+                sec = Math.round((playTime/1000) % 60);
+            var playTimeText = "";
+            if(min) playTimeText += min + "min<br/>";
+            if(sec) playTimeText += sec + "s<br/>";
+            document.getElementById('playtime').innerHTML = playTimeText;
+          }
         },1000);
           
           var map = L.map('map');
@@ -196,7 +200,7 @@
           }
 
           function onLocationError(e) {
-              alert(e.message);
+              $('#alert').text(e.message).removeClass('collapse').show();
           }
 
           map.on('locationfound', onLocationFound);

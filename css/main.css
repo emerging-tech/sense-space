@@ -23,3 +23,11 @@
   height:90vh;
   margin-top:8vh;
 }
+
+#alert{
+  position:fixed;
+  top:10vh;
+  width:50%;
+  left:25%;
+  z-index:10000;
+}
